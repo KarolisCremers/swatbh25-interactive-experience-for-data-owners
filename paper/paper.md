@@ -116,7 +116,8 @@ We encountered problems with dependencies during experimentation with the API. D
 To make sure the docker implementation API works for everyone, the necessary actions have been added to the documentation:
 ```
 * Expose port 8080 or desired port in the Dockerfile
-* Add the port argument `-p 8080:8000` to map internal port 8000 to external port 8080 or desired port. 
+* Add the port argument `-p 8080:8000` to map
+  internal port 8000 to external port 8080 or desired port. 
 * Connect to `http://localhost:8080/` or `http://localhost:PORT/`.
 ```
 
