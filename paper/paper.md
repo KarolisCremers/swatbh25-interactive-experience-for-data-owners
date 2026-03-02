@@ -10,30 +10,39 @@ authors:
   - name: Karolis Cremers
     orcid: 0000-0002-1756-3905
     affiliation: 1
+    role: Conceptualization, Software, Writing – original draft
   - name: Daphne Wijnbergen
     orcid: 0000-0002-7449-6657
     affiliation: 1
+    role: Software, Writing – review & editing
   - name: Julia Koblitz
     orcid: 0000-0002-7260-2129
     affiliation: 2
+    role: Software, Writing – original draft
   - name: Javier Millan Acosta
     affiliation: 3
     orcid: 0000-0002-4166-7093
+    role: Software
   - name: Rick Overkleeft
     orcid: 0009-0004-3529-1159
     affiliation: 1, 4
+    role: Software
   - name: David Schimmel
     orcid: 0000-0002-1719-8928
     affiliation: 5
+    role: Software
   - name: Katja Hoffmann
     orcid: 0000-0003-4765-0767
     affiliation: 6
+    role: Software
   - name: Brieuc Quemeneur
     orcid: 0009-0006-7574-2254
     affiliation: 7
+    role: Software
   - name: Ensar Emir Erol
     orcid: 0000-0002-5739-8860
     affiliation: 8
+    role: Software, Writing – review & editing
 
 
 
@@ -153,4 +162,3 @@ One of the main barriers for enabling community development of a tool is its eas
 Many thanks to BioHackathon SWAT4HCLS 2025 for organizing the event, work space, food and drinks during the hackathon.
 
 ## References
-
