@@ -74,105 +74,82 @@ authors_short: Karolis Cremers, Daphne Wijnbergen, \emph{et al.}
 
 
 # Introduction
-At the SWAT4HCLS 2025 Hackathon, we worked on improving an interactive interface for mapping data to schemas. This report outlines the progress made in improving the [RDFCraft](https://github.com/MaastrichtU-IDS/RDFCraft) tool and recommendations for further development to better both the user experience and ease of development.
-
+At the Barcelona SWAT4HCLS 2025 Hackathon, familiarize with and worked on improvements for RDFCraft.
 
 ## Background
-Mapping data to an implicit or explicit schema to onboard data unto a registry, database or analysis pipeline is a universal experience for data focused researcher. In the field of semantic web application and tools schemas are often structured and described through ontologies [@ontologies]. These highly structured descriptions allow for machine readability and automation [@thirumahal2022semantic].
+Mapping data to an implicit or explicit schema to onboard data unto a registry, database or analysis pipeline is a universal experience for data focused researchers. In the field of semantic web application and tools metadata are often structured in the Resource Description Framework (RDF) [@RDF] and described through ontologies [@ontologies]. These highly structured descriptions allow for machine readability and automation [@thirumahal2022semantic]. Mapping data to a metadata schema often requires extensive knowledge of the data, the model and familiarity with a programming or mapping language such as Resource Mapping Language (RML)[@dimou2014rml] or YARRRML[@yarrrml].
 
-Mapping data to a schema often requires extensive knowledge of the data, the model and familiarity with a programming or mapping language such as Resource Mapping Language (RML)[@dimou2014rml]. 
-Data owners without technical know-how of semantic technologies and programming have a especially high learning curve to semantically represent their data. To combat this tools that reduce the technical load, like RDFCraft, are developed.
+Data owners without technical know-how of semantic technologies and programming have an especially high learning curve to semantically represent their data. To combat this learning curve, tools that reduce the technical load, like RDFCraft, are developed. [RDFCraft](https://github.com/MaastrichtU-IDS/RDFCraft) is a data onboarding tool that helps with mapping tabular or JSON formatted data to a reference schema ontology. The tool consists of a data parser, an ontology parser and GUI that allows for semi-automatic mapping of data to ontology terms. The tool outputs both an RML file and RDF representation of the data described with the provided ontology. Through this functionality data owners do not need extensive knowledge of RML or RDF and can assign data attributes to their ontology terms in a more streamlined manner.
 
-[RDFCraft](https://github.com/MaastrichtU-IDS/RDFCraft) is a data onboarding tool that helps with mapping tabular or JSON formatted data to a reference schema ontology. The tool consists of a data parser, a ontology parser and GUI that allows for semi-autoatic mapping of data to ontology terms. The tool outputs both an RML file and RDF representation of the data discribed with the provided ontology. Through this functionality data owners do not need extensive knowledge of RML or RDF and can assign data attributes to their ontology terms in a more streamlined manner.
+## Hackathon objectives
+The version of RDFCraft at time of the hackathon required the user to type in the matching ontology term to the data attribute. Even with autocomplete function, semi-automatic functions and LLM integration this requires many written user inputs. A proposed solution to this is the use of a drag-and-drop system where users can drag a representation of the data attribute on top of the associated ontology term in a visualized schema to perform the mapping.
 
-Here we report on the work performed to improve the RDFCraft tool, during the SWAT4HCLS BioHackathon 2025.
+To visualize the schema automatically by the tool it should be able to identify and differentiate between classes and properties.
 
-## hackathon objectives
-The version of RDFCraft at time of the hackathon required the user to type in the matching ontology term to the data attribute. Even with autocomplete function and semi-automatic functions this requires many user inputs. A proposed solution to this is the use of a drag-and-drop system where users can drag a representation of the data attribute on top of the associated ontology term in a visualized schema to perform the mapping.
+The original objective of this hackathon was to enhance the RDFCraft tool to improve the interactive experience for data owners. Specifically, we aimed to: Parse SHACL (or Shex or alternative) shapes to extract different classes necessary for schema compliance validation; Automatically visualize the classes in a graph and implement SHACL (or ontology) validation to mappings.
 
-The original objective of this hackathon was to enhance the RDFCraft tool to improve the interactive experience for data owners. Specifically, we aimed to:
-
-- Parse SHACL (or Shex or alternative) shapes to extract different classes necessary for schema compliance.
-- Automatically visualize the classes in a graph
-- Implement a drag-and-drop system form mapping data attributes to the classes in the graph
-- Implement SHACL (or ontology) validation to mapped data when mapped
-
-At the beginning of the session we defined subgoals with participants to work towards and defined the following themes:
+At the beginning of the session we defined the following subgoals with participants:
 
 ### Backend Enhancements
-Improving the backend functionality would open up opportunities for development of new features and automated processes in the tool. We aimed to set up a database module to store the schemas and input data.
+Improving the backend functionality would open up opportunities for development of new features and automated processes in the tool. We aimed to set up a database module to store the schemas and input data for stable and fast access.
 
 
 #### Format Parsing
-Schemas are often written in different formats, as such we aimed to parse both OWL and SHACL representations into classes that could be visualized in the UI components. Additionally, participants of the hackathon agreed including additional input file formats would increase the value of the tool within their respective work environment. As such, an additional goal was set to develop a module to parse VCF (Variant Call Format) files within the tool.
-
-* **VCF Parsing**: Implement VCF parsing for data source files.
-* **OWL Ontology Parsing**: Integrate OWL ontology parsing into the tool for schema files.
-* **SHACL Schema Parsing**: Parse SHACL schema into RDF class objects. This would allow SPARQL queries and other graph based methods.
+(Meta-)Data schemas are often written in different formats, as such we aimed to parse both OWL (Web Ontology Language) and SHACL (Shapes Constraint Language) representations into classes that could be visualized in the UI components. SHACL files are especially valuable, as these could be used to validate the mappings based on the values of the data attribute.
+Additionally, participants of the hackathon agreed that including additional input file formats would increase the value of the tool within their respective work environment. As such, an additional goal was set to develop a module to parse VCF (Variant Call Format) files within the tool.
 
 
 ### UI Enhancements
-* **SHACL Integration**: Add SHACL to the “add ontology” window or add a button for SHACL.
-* **Schema Graph Generation**: Generate the schema graph in the UI based on extracted classes and properties from the user given schema file.
-* **Validation Error Representation**: Represent SHACL validation errors in the UI.
-* **Drag-and-Drop Interaction**: Implement drag-and-drop interaction from the “references” tab to graph node/property box that triggers a mapping event.
-* **Mapping Events**: Implement or reuse an event that adds an attribute path (location in the given data file) to the node or property within the RML. This is to enable drag and drop features in the UI.
-
+To enable drag-and-drop functionality, in a convenient manner, there are several additions needed to the UI: First, automatic generation of initial nodes classes extracted from the schema(s) that provide targets to drop data attributes on. Second, add a drag-and-drop interaction from the “references” tab to graph node/property box that triggers a mapping event. Implement or reuse an event that adds an attribute path (location in the given data file) to the node or property within the RML. 
+Represent SHACL validation errors in the UI. Finally, a SHACL option should be added to the "add ontology" window; 
 
 
 # Results
-During the hackathon difficulties with installation of the tool for development were experienced. 
-Docker issues limited developing parsing of SHACL. These are documented and the solution are described below.
-
-On a Because of this, the results of the hackathon consist mainly of improvements to the UI and advice on improving installation process.
 
 ### Docker Enhancements
-We encountered problems with dependencies during experimentation with the API. Based on our experimentation during the hackathon enhancements have been [implemented into the tool](https://github.com/MaastrichtU-IDS/RDFCraft/pull/40)
+Based on our experimentation during the hackathon enhancements have been [implemented into the tool](https://github.com/MaastrichtU-IDS/RDFCraft/pull/40).
+
+**Dockerfile Enhancements**:  
+We encountered problems with dependencies during experimentation with the API. Dependencies were written in separated containers using Docker and Docker Compose to avoid requiring Java installation on the local machine.
 
 **Docker Documentation**:  
-Add the following action should be added to the documentation to make sure the docker implementation works for everyone:
+To make sure the docker implementation API works for everyone, the necessary actions have been added to the documentation:
+```
 * Expose port 8080 or desired port in the Dockerfile
 * Add the port argument `-p 8080:8000` to map internal port 8000 to external port 8080 or desired port. 
 * Connect to `http://localhost:8080/` or `http://localhost:PORT/`.
-
-**Dockerfile Enhancements**:  
-Build dependencies as separate containers using Docker and Docker Compose to avoid requiring Java installation on the local machine. Docker images to include would be Node.js, Python, and Java JRE. 
+```
 
 ### Format parsing
-**SHACL**
-Extraction of properties from SHACL was succesful, however, integration of the classes into the tool was not achieved by the end of the hackathon.
+The development of SHACL parsing in the tool was limited by Docker issues. Extraction of properties from SHACL was succesful, however, integration of the classes into the tool was not achieved by the end of the hackathon.
 
 
 ### UI Enhancements
 The following two UI enhancements have been [added to the tool](https://github.com/MaastrichtU-IDS/RDFCraft/pull/39):  
-We added a quality of life change to the behaviour of the UI: After adding a node, it is automatically selected. Additionally, Nodes of different types (entity, literal, URI) are colored differently to indicate their differences. These colors correspond to the colors given to the node types in the overview window was already present in the UI.
+We added a quality of life change to the behavior of the UI: After adding a node, it is automatically selected. Additionally, Nodes of different types (entity, literal, URI) are colored differently to indicate their differences. These colors correspond to the colors given to the node types in the overview window was already present in the UI.
 
-Finally, in preperation for the schema parsing implementation for the automatic visualization of schema classes in a graph, a [Python function](https://github.com/dwijnbergen/Node_functions/blob/main/estimate_node_height.py) was created to estimate node height. When a node graph is generated automatically, it is important to position the nodes without them overlapping. This function follows the following pattern:   
-`Handle height = 10 px.`  
-`Title height = 18 px * [number of lines] + 35 px.`  
-`Property height ≈ 50 px * [number of properties].`
-
-
-### User Experience Improvements advice
-
+Finally, in preparation for the automatic visualization of schema classes in a graph, a [Python function](https://github.com/dwijnbergen/Node_functions/blob/main/estimate_node_height.py) was created to estimate node height. When a node graph is generated automatically, it is important to position the nodes without them overlapping. This function follows the following pattern:   
+``` 
+Handle height = 10 px.
+Title height = 18 px * [number of lines] + 35 px.  
+Property height ≈ 50 px * [number of properties].
+```
 
 
 # Conclusion
-We developed algorithms for node box sizes and positions to avoid overwhelming the user and implemented import/export of mappings. A [Github Fork](https://github.com/jmillanacosta/RDFCraft/tree/shapes) was created where improvements to the tool were pushed. These improvements published on the fork have been [integrated into the original RDFCraft tool github](https://github.com/MaastrichtU-IDS/RDFCraft/pull/39) by the original creator. 
-
-Some UI components are reused from libraries, making adaptation challenging.
-One of the main barriers for the enabling community development is the ease of installation, improvement on this aspect will promote collaboration with peers.
+The work our group has done provides a foundation for further improvement of the RDFCraft tool.
+A [GitHub Fork](https://github.com/jmillanacosta/RDFCraft/tree/shapes) was created where improvements to the tool were pushed. These improvements published on the fork have been [integrated into the original RDFCraft tool GitHub](https://github.com/MaastrichtU-IDS/RDFCraft/pull/39) by the original creator of RDFCraft. First, the Docker implementation was improved for future developments. Second, Quality of life changes in the behavior of the UI and visual clarity improvements. Finally, we took the first steps towards new features by developing algorithms for node box sizes and positions. 
 
 # Jupyter notebooks, GitHub repositories and data repositories
-Github Fork: https://github.com/jmillanacosta/RDFCraft/tree/shapes  
+GitHub Fork: https://github.com/jmillanacosta/RDFCraft/tree/shapes  
 original RDFCraft tool github: https://github.com/MaastrichtU-IDS/RDFCraft/commit/d6a7623edcc2cf677292fd9c611e6694680e4d19  
 
 # Future work
-To ensure the process is not overwhelming for users unfamiliar with mapping we recommend: Initially only showing mandatory classes and their manditory properties, sorted alphabetically. Additionally, the schema graph should progressively expand based on filled-in mappings to promote mapping completeness. Finaly, expand/collapse functionality of nodes would give control to the user on the extend of the schema shown.
+One of the main barriers for enabling community development of a tool is its ease of installation. Improvement on this aspect will promote collaboration with peers. To ensure the process is not overwhelming for users unfamiliar with mapping we recommend: Initially only showing mandatory classes and their mandatory properties, sorted alphabetically. Additionally, the schema graph should progressively expand based on filled-in mappings to promote mapping completeness. Finally, expand/collapse functionality of nodes would give control to the user on the extend of the schema shown.
 
 
-# Acknowledgements
-Many thanks to BioHackathon SWAT4HCLS 2025 for organizing the event, workspace and food during the hackathon
+## Acknowledgements
+Many thanks to BioHackathon SWAT4HCLS 2025 for organizing the event, work space, food and drinks during the hackathon.
 
-# References
+## References
 
