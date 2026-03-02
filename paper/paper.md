@@ -132,7 +132,7 @@ Finally, in preparation for the automatic visualization of schema classes in a g
 ``` 
 Handle height = 10 px.
 Title height = 18 px * [number of lines] + 35 px.  
-Property height ≈ 50 px * [number of properties].
+Property height \approx 50 px * [number of properties].
 ```
 
 
