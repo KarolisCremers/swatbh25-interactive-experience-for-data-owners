@@ -83,7 +83,7 @@ authors_short: Karolis Cremers, Daphne Wijnbergen, \emph{et al.}
 
 
 # Introduction
-At the Barcelona SWAT4HCLS 2025 Hackathon, familiarize with and worked on improvements for RDFCraft.
+At the Barcelona SWAT4HCLS 2025 Hackathon, a hacking group familiarized with and worked on improvements for RDFCraft.
 
 ## Background
 Mapping data to an implicit or explicit schema to onboard data unto a registry, database or analysis pipeline is a universal experience for data focused researchers. In the field of semantic web application and tools metadata are often structured in the Resource Description Framework (RDF) [@RDF] and described through ontologies [@ontologies]. These highly structured descriptions allow for machine readability and automation [@thirumahal2022semantic]. Mapping data to a metadata schema often requires extensive knowledge of the data, the model and familiarity with a programming or mapping language such as Resource Mapping Language (RML)[@dimou2014rml] or YARRRML[@yarrrml].
