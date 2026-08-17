@@ -70,9 +70,9 @@ affiliations:
 date: 27 February 2025
 cito-bibliography: paper.bib
 event: BH25SWAT4HCLS
-biohackathon_name: "BioHackathon SWAT4HCLS 2025"
-biohackathon_url:   "[https://www.swat4ls.org/](https://www.swat4ls.org/workshops/barcelona2025/programme/swat4hcls-2025-biohackathon/)"
-biohackathon_location: "Barcelona, Spain, 2025"
+biohackathon_name: "16th International SWAT4HCLS Conference"
+biohackathon_url:   "https://www.swat4ls.org/workshops/barcelona2025/programme/swat4hcls-2025-biohackathon/"
+biohackathon_location: "Barcelona, Spain"
 group: Project 26
 # URL to project git repo --- should contain the actual paper.md:
 git_url: https://github.com/KarolisCremers/swatbh25-interactive-experience-for-data-owners
